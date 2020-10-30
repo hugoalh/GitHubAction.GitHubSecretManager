@@ -1,0 +1,18 @@
+name: "GitHub Secret Manager"
+author: "hugoalh"
+description: "Manage secret across repositories and organizations."
+inputs:
+  token:
+    description: "{string.secret} GitHub personal access token. Use `$github.token` will not work!"
+    required: true
+  mode:
+    description: "{string}"
+    required: false
+    default: "pushmerge"
+runs:
+  using: "node12"
+  pre: "setup.js"
+  main: "main.js"
+branding:
+  icon: "search"
+  color: "gray-dark"
