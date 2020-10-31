@@ -126,7 +126,7 @@ jobs:
       - id: "secret-manage-main"
         uses: "hugoalh/GitHubAction.GitHubSecretManager@v1.0.0"
         with:
-          token: ${{secrets.GITHUB_TOKEN_FOR_GHSM}}
+          token: "${{secrets.GITHUB_TOKEN_FOR_GHSM}}"
           mode: "pushmerge"
           target: |
             hugoalh/GitHubAction.SendToDiscord
