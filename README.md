@@ -81,9 +81,9 @@ Must be the only step in the job (to use different mode at the same time, please
   - `"exist"` Update target's secret if have the same key with source's secret. This will not delete any target's secret.
   - `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
   - `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
-- **`target`:** `<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryName$` (i.e.: for this repository, it is `GitHubAction.GitHubSecretManager`, not `hugoalh/GitHubAction.GitHubSecretManager`), and each organization must have format `o(rg(anization)?)?/$organizationName$`.
+- **`target`:** `<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
   > **⚠ Important:** For security reasons, action's actor, source's secret's owner (i.e.: repository owner (GitHub Action cannot run without a repository)), target's secret's owner (repository owner or organization owner), and token user must be the same user.
-- **`prefix` \[Optional\]:** `<string = "gsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Dynamic)](#-Input-Dynamic)".
+- **`prefix` \[Optional\]:** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Dynamic)](#-Input-Dynamic)".
 
 ### 📥 Input (Dynamic)
 
@@ -91,16 +91,17 @@ None of the GitHub Action can scan or import the repository secret(s) or the org
 
 Secret(s) that need to use (manage) can list in either `with` or `env` field, but `with` will take priority when have the same key in both field.
 
-Secret's key is case-insensitive and can be rename. Although secret key is case-insensitive, it is recommended using lower case in `with` and upper case in `env`.
+Secret's key is case-insensitive and can be rename. Although secret key is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
 
 ```yaml
 # Example Input
 with:
-  prefix: "gsm_"
-  gsm_npm_token: "${{secrets.NPM_TOKEN}}"
+  prefix: "ghsm_"
+  ghsm_npm_token: "${{secrets.NPM_TOKEN}}"
 env:
-  GSM_WAVE: "${{secrets.FOO_BAR}}"
-  GSM_NPM_TOKEN: "${{secrets.LOL}}"
+  GHSM_WAVE: "${{secrets.FOO_BAR}}"
+  GHSM_NPM_TOKEN: "${{secrets.LOL}}"
+  APPLE: "${{secrets.APPLE}}"
 ```
 ```jsonc
 // Parse Result
@@ -125,15 +126,15 @@ jobs:
       - id: "secret-manage-main"
         uses: "hugoalh/GitHubAction.GitHubSecretManager@v1.0.0"
         with:
-          token: ${{secrets.GITHUB_TOKEN_FOR_GSM}}
+          token: ${{secrets.GITHUB_TOKEN_FOR_GHSM}}
           mode: "pushmerge"
           target: |
-            GitHubAction.SendToDiscord
-            GitHubAction.SendToIFTTT
-            o/hugoalh-studio
-          prefix: "gsm_"
-          gsm_npm_token: "${{secrets.NPM_TOKEN}}"
-          gsm_wave: "${{secrets.FOO_BAR}}"
+            hugoalh/GitHubAction.SendToDiscord
+            hugoalh/GitHubAction.SendToIFTTT
+            (org)hugoalh-studio
+          prefix: "ghsm_"
+          ghsm_npm_token: "${{secrets.NPM_TOKEN}}"
+          ghsm_wave: "${{secrets.FOO_BAR}}"
 ```
 
 ### 📚 Guide

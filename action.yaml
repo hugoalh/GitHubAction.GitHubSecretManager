@@ -3,12 +3,19 @@ author: "hugoalh"
 description: "Manage secret across repositories and organizations."
 inputs:
   token:
-    description: "{string.secret} GitHub personal access token. Use `$github.token` will not work!"
+    description: "{string.secret} GitHub personal access token."
     required: true
   mode:
-    description: "{string}"
+    description: "{string} How to manage target's secret."
     required: false
     default: "pushmerge"
+  target:
+    description: "{string} Target repository(ies) and/or organization(s)."
+    required: true
+  prefix:
+    description: "{string} Prefix of the secret(s) that need to use (manage)."
+    required: false
+    default: "ghsm_"
 runs:
   using: "node12"
   pre: "setup.js"
