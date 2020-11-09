@@ -11,7 +11,7 @@
   <img align="center" alt="GitHub Fork" src="https://img.shields.io/github/forks/hugoalh/GitHubAction.GitHubSecretManager?logo=github&logoColor=ffffff&style=flat-square" />
 </details>
 
-A GitHub action to manage secret across repositories and organizations.
+A GitHub action to manage secret across repository and organization.
 
 <table>
   <tr>
@@ -82,14 +82,14 @@ Must be the only step in the job (to use different mode at the same time, please
   - `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
   - `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
 - **`target`:** `<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
-  > **⚠ Important:** For security reasons, action's actor, source's secret's owner (i.e.: repository owner (GitHub Action cannot run without a repository)), target's secret's owner (repository owner or organization owner), and token user must be the same user.
+  > **⚠ Important:** For security reason, action's actor, source's secret's owner (i.e.: repository owner (GitHub Action cannot run without a repository)), target's secret's owner (i.e.: repository owner or organization owner), and token user must be the same user.
 - **`prefix` \[Optional\]:** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Dynamic)](#-Input-Dynamic)".
 
 ### 📥 Input (Dynamic)
 
 None of the GitHub Action can scan or import the repository secret(s) or the organization secret(s) automatically, therefore this must do manually.
 
-Secret(s) that need to use (manage) can list in either `with` or `env` field, but `with` will take priority when have the same key in both field.
+Secret(s) that need to use (manage) can list in either `with` or `env` slot, but `with` will take priority when have the same key in both slot.
 
 Secret's key is case-insensitive and can be rename. Although secret key is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
 
@@ -120,7 +120,7 @@ env:
 ```yaml
 jobs:
   secret-manage:
-    name: "Synchronize Secret"
+    name: "Update Secret"
     runs-on: "ubuntu-latest"
     steps:
       - id: "secret-manage-main"
@@ -139,5 +139,5 @@ jobs:
 
 ### 📚 Guide
 
-- [GitHub Actions: Creating and storing encrypted secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets)
-- [GitHub Actions: Enable debug logs](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs)
+- [GitHub Actions: Enabling debug logging](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/enabling-debug-logging)
+- [GitHub Actions: Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)

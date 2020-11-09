@@ -1,6 +1,6 @@
 name: "GitHub Secret Manager"
 author: "hugoalh"
-description: "Manage secret across repositories and organizations."
+description: "Manage secret across repository and organization."
 inputs:
   token:
     description: "{string.secret} GitHub personal access token."
@@ -21,5 +21,5 @@ runs:
   pre: "setup.js"
   main: "main.js"
 branding:
-  icon: "search"
+  icon: "key"
   color: "gray-dark"

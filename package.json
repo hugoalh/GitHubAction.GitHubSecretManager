@@ -1,7 +1,7 @@
 {
 	"name": "githubaction.githubsecretmanager",
-	"version": "1.0.0",
-	"description": "A GitHub action to manage secret across repositories and organizations.",
+	"version": "0.1.0",
+	"description": "A GitHub action to manage secret across repository and organization.",
 	"keywords": [
 		"github-action",
 		"github",
