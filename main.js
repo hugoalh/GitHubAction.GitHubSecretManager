@@ -83,8 +83,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		(targetOrganization.length === 0 && targetRepository.length === 0) ||
 		secretDatabaseKey.length === 0
 	) {
-		githubAction.core.error(`Nothing to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
-		process.exit(0);
+		throw new Error(`Nothing to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
 	};
 	githubAction.core.info(`Set up transaction platform. ([GitHub Action] GitHub Secret Manager)`);
 	const octokit = githubAction.github.getOctokit(token);
