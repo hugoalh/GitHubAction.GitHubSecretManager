@@ -80,7 +80,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		githubAction.core.setSecret(element);
 	});
 	if (
-		(targetOrganization.length === 0 && targetRepository === 0) ||
+		(targetOrganization.length === 0 && targetRepository.length === 0) ||
 		secretDatabaseKey.length === 0
 	) {
 		githubAction.core.error(`Nothing to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
