@@ -71,7 +71,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		};
 	});
 	Object.keys(environmentVariable).forEach((element) => {
-		if (element.toUpperCase().indexOf(prefix) === 0) {
+		if (element.toUpperCase().indexOf(`INPUT_${prefix}`) === 0) {
 			secretDatabase[element.toUpperCase().replace(`INPUT_${prefix}`, "")] = process.env[element];
 		};
 	});
