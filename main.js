@@ -10,12 +10,16 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	},
 	githubSodium = require("@hugoalh/github-sodium");
 (async () => {
-	githubAction.core.info(`Import workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
-	let mode = githubAction.core.getInput("mode"),
+	githubAction.core.info(`Import workflow argument. ([GitHub Action] GitHub Secret Manager)`);
+	let environmentVariable = process.env,
+		mode = githubAction.core.getInput("mode"),
 		prefix = githubAction.core.getInput("prefix"),
 		target = githubAction.core.getInput("target"),
 		token = githubAction.core.getInput("token");
-	githubAction.core.info(`Analysis workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
+	githubAction.core.info(`Analysis workflow argument. ([GitHub Action] GitHub Secret Manager)`);
+	if (environmentVariable.GITHUB_ACTOR !== environmentVariable.GITHUB_REPOSITORY.split("/")[0]) {
+		throw new Error(`Action's actor must be the owner! ([GitHub Action] GitHub Secret Manager)`);
+	};
 	if (advancedDetermine.isString(mode) !== true) {
 		throw new TypeError(`Argument "mode" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
@@ -60,9 +64,6 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	if (advancedDetermine.isString(token) !== true) {
 		throw new TypeError(`Argument "token" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
-	githubAction.core.info(`Import workflow argument (stage 2). ([GitHub Action] GitHub Secret Manager)`);
-	let environmentVariable = process.env;
-	githubAction.core.info(`Analysis workflow argument (stage 2). ([GitHub Action] GitHub Secret Manager)`);
 	let secretDatabase = {};
 	Object.keys(environmentVariable).forEach((element) => {
 		if (element.toUpperCase().indexOf(prefix) === 0) {
