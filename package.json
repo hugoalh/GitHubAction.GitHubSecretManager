@@ -24,7 +24,7 @@
 		"@actions/core": "^1.2.6",
 		"@actions/github": "^4.0.0",
 		"@hugoalh/advanced-determine": "^4.0.0",
-		"tweetsodium": "^0.0.5"
+		"@hugoalh/github-sodium": "^1.0.0"
 	},
 	"engines": {
 		"node": ">= 12.13.0",

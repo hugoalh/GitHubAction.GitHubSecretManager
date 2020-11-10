@@ -7,7 +7,8 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	githubAction = {
 		core: require("@actions/core"),
 		github: require("@actions/github")
-	};
+	},
+	githubSodium = require("@hugoalh/github-sodium");
 (async () => {
 	githubAction.core.info(`Import workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
 	let mode = githubAction.core.getInput("mode"),
@@ -85,8 +86,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		process.exit(0);
 	};
 	githubAction.core.info(`Set up transaction platform. ([GitHub Action] GitHub Secret Manager)`);
-	const octokit = githubAction.github.getOctokit(token),
-		soulEncrypt = require("./encrypt.js");
+	const octokit = githubAction.github.getOctokit(token);
 	if (targetOrganization.length > 0) {
 		githubAction.core.info(`Manage organization(s) secret. ([GitHub Action] GitHub Secret Manager)`);
 		for (let indexOrganization = 0; indexOrganization < targetOrganization.length; indexOrganization++) {
@@ -139,7 +139,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			githubAction.core.setSecret(publicKeyID);
 			for (let indexExistKey = 0; indexExistKey < listExist.length; indexExistKey++) {
 				let key = listExist[indexExistKey];
-				let value = soulEncrypt(publicKey, secretDatabase[key]);
+				let value = githubSodium(publicKey, secretDatabase[key]);
 				githubAction.core.setSecret(value);
 				let data = await octokit.actions.createOrUpdateOrgSecret({
 					encrypted_value: value,
@@ -157,7 +157,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
 						let key = listNotExist[indexNotExistKey];
-						let value = soulEncrypt(publicKey, secretDatabase[key]);
+						let value = githubSodium(publicKey, secretDatabase[key]);
 						githubAction.core.setSecret(value);
 						let data = await octokit.actions.createOrUpdateOrgSecret({
 							encrypted_value: value,
@@ -241,7 +241,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			githubAction.core.setSecret(publicKeyID);
 			for (let indexExistKey = 0; indexExistKey < listExist.length; indexExistKey++) {
 				let key = listExist[indexExistKey];
-				let value = soulEncrypt(publicKey, secretDatabase[key]);
+				let value = githubSodium(publicKey, secretDatabase[key]);
 				githubAction.core.setSecret(value);
 				let data = await octokit.actions.createOrUpdateRepoSecret({
 					encrypted_value: value,
@@ -260,7 +260,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
 						let key = listNotExist[indexNotExistKey];
-						let value = soulEncrypt(publicKey, secretDatabase[key]);
+						let value = githubSodium(publicKey, secretDatabase[key]);
 						githubAction.core.setSecret(value);
 						let data = await octokit.actions.createOrUpdateRepoSecret({
 							encrypted_value: value,
