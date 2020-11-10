@@ -76,6 +76,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		};
 	});
 	let secretDatabaseKey = Object.keys(secretDatabase);
+	githubAction.core.debug(`Secret Key List: ${secretDatabaseKey.join(", ")} ([GitHub Action] GitHub Secret Manager)`);
 	Object.values(secretDatabase).forEach((element) => {
 		githubAction.core.setSecret(element);
 	});
@@ -118,14 +119,18 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			let listExist = [],
 				listNotExist = [];
-			result.forEach((key) => {
-				key = key.toUpperCase();
-				if (secretDatabaseKey.includes(key)) {
-					listExist.push(key);
-				} else {
-					listNotExist.push(key);
-				};
-			});
+			if (result.length === 0) {
+				listNotExist = secretDatabaseKey;
+			} else {
+				result.forEach((key) => {
+					key = key.toUpperCase();
+					if (secretDatabaseKey.includes(key)) {
+						listExist.push(key);
+					} else {
+						listNotExist.push(key);
+					};
+				});
+			};
 			let dataPublicKey = await octokit.actions.getOrgPublicKey({
 				org: organizationName
 			});
@@ -219,14 +224,18 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			let listExist = [],
 				listNotExist = [];
-			result.forEach((key) => {
-				key = key.toUpperCase();
-				if (secretDatabaseKey.includes(key)) {
-					listExist.push(key);
-				} else {
-					listNotExist.push(key);
-				};
-			});
+			if (result.length === 0) {
+				listNotExist = secretDatabaseKey;
+			} else {
+				result.forEach((key) => {
+					key = key.toUpperCase();
+					if (secretDatabaseKey.includes(key)) {
+						listExist.push(key);
+					} else {
+						listNotExist.push(key);
+					};
+				});
+			};
 			let dataPublicKey = await octokit.actions.getRepoPublicKey({
 				owner: repositoryOwner,
 				repo: repositoryName
