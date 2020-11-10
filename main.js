@@ -40,10 +40,10 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	if (advancedDetermine.isString(prefix) !== true) {
 		throw new TypeError(`Argument "prefix" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
-	if (prefix.toLowerCase().search(/^[\w\d]+_$/gu) === -1) {
+	if (prefix.toLowerCase().search(/^[\w\d]+_$/gu) === 0) {
 		prefix = prefix.toUpperCase();
 	} else {
-		throw new SyntaxError(`Argument "prefix"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager`);
+		throw new SyntaxError(`Argument "prefix"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (advancedDetermine.isString(target) !== true) {
 		throw new TypeError(`Argument "target" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
