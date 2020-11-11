@@ -153,6 +153,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			switch (mode) {
 				case "exist":
+				default:
 					break;
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
@@ -181,8 +182,6 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 							githubAction.core.warning(`Receive status code ${data.status}! May cause error in the beyond. ([GitHub Action] GitHub Secret Manager)`);
 						};
 					};
-					break;
-				default:
 					break;
 			};
 		};
@@ -255,6 +254,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			switch (mode) {
 				case "exist":
+				default:
 					break;
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
@@ -285,8 +285,6 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 							githubAction.core.warning(`Receive status code ${data.status}! May cause error in the beyond. ([GitHub Action] GitHub Secret Manager)`);
 						};
 					};
-					break;
-				default:
 					break;
 			};
 		};
