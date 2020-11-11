@@ -119,18 +119,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			let listExist = [],
 				listNotExist = [];
-			if (result.length === 0) {
-				listNotExist = secretDatabaseKey;
-			} else {
-				result.forEach((key) => {
-					key = key.toUpperCase();
-					if (secretDatabaseKey.includes(key)) {
-						listExist.push(key);
-					} else {
-						listNotExist.push(key);
-					};
-				});
-			};
+			secretDatabaseKey.forEach((key) => {
+				if (result.includes(key) === true) {
+					listExist.push(key);
+				} else {
+					listNotExist.push(key);
+				};
+			});
 			let dataPublicKey = await octokit.actions.getOrgPublicKey({
 				org: organizationName
 			});
@@ -224,18 +219,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 			let listExist = [],
 				listNotExist = [];
-			if (result.length === 0) {
-				listNotExist = secretDatabaseKey;
-			} else {
-				result.forEach((key) => {
-					key = key.toUpperCase();
-					if (secretDatabaseKey.includes(key)) {
-						listExist.push(key);
-					} else {
-						listNotExist.push(key);
-					};
-				});
-			};
+			secretDatabaseKey.forEach((key) => {
+				if (result.includes(key) === true) {
+					listExist.push(key);
+				} else {
+					listNotExist.push(key);
+				};
+			});
 			let dataPublicKey = await octokit.actions.getRepoPublicKey({
 				owner: repositoryOwner,
 				repo: repositoryName
