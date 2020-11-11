@@ -1,4 +1,4 @@
-name: "Secret Manager"
+name: "GitHub Secret Manager"
 author: "hugoalh"
 description: "Manage secret across repository and organization."
 inputs:
@@ -21,5 +21,5 @@ runs:
   pre: "setup.js"
   main: "main.js"
 branding:
-  icon: "key"
+  icon: "upload"
   color: "gray-dark"
