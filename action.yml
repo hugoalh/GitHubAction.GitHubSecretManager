@@ -1,4 +1,4 @@
-name: "GH Secret Manager"
+name: "GitHub Secret Manager"
 author: "hugoalh"
 description: "Manage secret across repository and organization."
 inputs:
