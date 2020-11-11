@@ -70,9 +70,12 @@ Any
 - NodeJS (>= v12.13)
 - NPM (>= v6.12)
 
-#### Miscellaneous
+#### ⚠ Important
 
-Must be the only step in the job (to use different mode at the same time, please split as multiple jobs or workflows).
+- For security reason:
+  - this action cannot execute/run on self-host machine/runner, and
+  - action's actor and source's secret's owner (i.e.: repository owner (GitHub Action cannot run without a repository)) must be the same user.
+- This action should be the only step in the job, to handle different set or use different mode at the same time, please split as multiple jobs.
 
 ### 📥 Input
 
@@ -82,7 +85,6 @@ Must be the only step in the job (to use different mode at the same time, please
   - `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
   - `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
 - **`target`:** `<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
-  > **⚠ Important:** For security reason, action's actor and source's secret's owner (i.e.: repository owner (GitHub Action cannot run without a repository)) must be the same user.
 - **`prefix` \[Optional\]:** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
 
 ### 📥 Input (Manual Part)
