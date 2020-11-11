@@ -1,21 +1,21 @@
 name: "GitHub Secret Manager"
 author: "hugoalh"
 description: "Manage secret across repository and organization."
-inputs:
-  # token:
-  #   description: "{string.secret} GitHub personal access token."
-  #   required: true
-  mode:
-    description: "{string} How to manage target's secret."
-    required: false
-    default: "pushmerge"
-  target:
-    description: "{string} Target repository(ies) and/or organization(s)."
-    required: true
-  prefix:
-    description: "{string} Prefix of the secret(s) that need to use (manage)."
-    required: false
-    default: "ghsm_"
+# inputs:
+#   token:
+#     description: "{string.secret} GitHub personal access token."
+#     required: true
+#   mode:
+#     description: "{string} How to manage target's secret."
+#     required: false
+#     default: "pushmerge"
+#   target:
+#     description: "{string} Target repository(ies) and/or organization(s)."
+#     required: true
+#   prefix:
+#     description: "{string} Prefix of the secret(s) that need to use (manage)."
+#     required: false
+#     default: "ghsm_"
 runs:
   using: "node12"
   pre: "setup.js"
