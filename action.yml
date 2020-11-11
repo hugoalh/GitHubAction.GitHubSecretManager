@@ -2,9 +2,9 @@ name: "GitHub Secret Manager"
 author: "hugoalh"
 description: "Manage secret across repository and organization."
 inputs:
-  token:
-    description: "{string.secret} GitHub personal access token."
-    required: true
+  # token:
+  #   description: "{string.secret} GitHub personal access token."
+  #   required: true
   mode:
     description: "{string} How to manage target's secret."
     required: false
