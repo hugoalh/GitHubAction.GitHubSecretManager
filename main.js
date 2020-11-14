@@ -17,10 +17,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		target = githubAction.core.getInput("target"),
 		token = githubAction.core.getInput("token");
 	githubAction.core.info(`Analysis workflow argument. ([GitHub Action] GitHub Secret Manager)`);
-	if (environmentVariable.GITHUB_ACTOR !== environmentVariable.GITHUB_REPOSITORY.split("/")[0]) {
-		throw new Error(`Action's actor must be the owner! ([GitHub Action] GitHub Secret Manager)`);
+	if (environmentVariable.GITHUB_ACTIONS !== true && environmentVariable.GITHUB_ACTIONS !== "true") {
+		throw new Error(`For security reason, this action cannot execute/run on self-host machine/runner! ([GitHub Action] GitHub Secret Manager)`);
 	};
-	if (advancedDetermine.isString(mode) !== true) {
+	if (environmentVariable.GITHUB_ACTOR !== environmentVariable.GITHUB_REPOSITORY.split("/")[0]) {
+		throw new Error(`For security reason, action's actor and source's secret's owner must be the same user! ([GitHub Action] GitHub Secret Manager)`);
+	};
+	if (advancedDetermine.isStringSingleLine(mode) !== true) {
 		throw new TypeError(`Argument "mode" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	switch (mode.toLowerCase()) {
@@ -37,7 +40,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		default:
 			throw new RangeError(`Argument "mode"'s value is not in the method list! ([GitHub Action] GitHub Secret Manager`);
 	};
-	if (advancedDetermine.isString(prefix) !== true) {
+	if (advancedDetermine.isStringSingleLine(prefix) !== true) {
 		throw new TypeError(`Argument "prefix" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (prefix.toLowerCase().search(/^[\w\d]+_$/gu) === 0) {
@@ -61,7 +64,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 		};
 	});
-	if (advancedDetermine.isString(token) !== true) {
+	if (advancedDetermine.isStringSingleLine(token) !== true) {
 		throw new TypeError(`Argument "token" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	let secretDatabase = {};

@@ -1,6 +1,6 @@
 {
 	"name": "githubaction.githubsecretmanager",
-	"version": "1.0.0",
+	"version": "1.0.0-rc.1",
 	"description": "A GitHub action to manage secret across repository and organization.",
 	"keywords": [
 		"github-action",
@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@actions/core": "^1.2.6",
 		"@actions/github": "^4.0.0",
-		"@hugoalh/advanced-determine": "^4.0.0",
+		"@hugoalh/advanced-determine": "^4.2.0",
 		"@hugoalh/github-sodium": "^1.0.0"
 	},
 	"engines": {
