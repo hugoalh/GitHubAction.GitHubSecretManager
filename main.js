@@ -148,7 +148,8 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 					encrypted_value: value,
 					key_id: publicKeyID,
 					org: organizationName,
-					secret_name: key
+					secret_name: key,
+					visibility: "all"
 				});
 				if (data.status !== 201 && data.status !== 204) {
 					githubAction.core.warning(`Receive status code ${data.status}! May cause error in the beyond. ([GitHub Action] GitHub Secret Manager)`);
