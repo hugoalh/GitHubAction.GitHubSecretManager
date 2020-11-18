@@ -79,13 +79,23 @@ Any
 
 ### 📥 Input
 
-- **`token`:** `<string.secret>` GitHub personal access token. Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
-- **`mode` \[Optional\]:** `<string = "pushmerge">` How to manage target's secret.
-  - `"exist"` Update target's secret if have the same key with source's secret. This will not delete any target's secret.
-  - `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
-  - `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
-- **`target`:** `<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
-- **`prefix` \[Optional\]:** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
+#### `token`
+
+`<string.secret>` GitHub personal access token. Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
+#### `mode`
+
+**\[Optional\]** `<string = "pushmerge">` How to manage target's secret.
+- `"exist"` Update target's secret if have the same key with source's secret. This will not delete any target's secret.
+- `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
+- `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
+
+#### `target`
+
+`<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
+
+#### `prefix`
+
+**\[Optional\]** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
 
 ### 📥 Input (Manual Part)
 
@@ -95,7 +105,7 @@ Secret(s) that need to use (manage) can list in either `with` or `env` slot, but
 
 Secret's key is case-insensitive and can be rename. Although secret key is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
 
-```yaml
+```yml
 # Example Input
 with:
   prefix: "ghsm_"
@@ -119,7 +129,7 @@ env:
 
 ### Example
 
-```yaml
+```yml
 jobs:
   secret-manage:
     name: "Update Secret"
