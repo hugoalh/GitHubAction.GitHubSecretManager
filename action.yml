@@ -9,13 +9,29 @@ inputs:
     description: "{string} How to manage target's secret."
     required: false
     default: "pushmerge"
-  target:
-    description: "{string} Target repository(ies) and/or organization(s)."
-    required: true
+  target_repository:
+    description: "{string} Target repository(ies)."
+    required: false
+  target_organization:
+    description: "{string} Target organization(s)."
+    required: false
+  secretlist:
+    description: "{object.json} A port for import all of the secrets in the source repository at once by entering value `${{secrets}}`."
+    required: false
+    default: ""
+  secretlist_ignore_action:
+    description: "{boolean} Ignore any secret name start with `ACTIONS_`."
+    required: false
+    default: "true"
   prefix:
     description: "{string} Prefix of the secret(s) that need to use (manage)."
     required: false
     default: "ghsm_"
+  target:
+    description: "{string} Target repository(ies) and/or organization(s)."
+    required: false
+    default: ""
+    deprecationMessage: "This argument is removed! Use `targer_repository` and/or `target_organization` instead."
 runs:
   using: "node12"
   pre: "setup.js"

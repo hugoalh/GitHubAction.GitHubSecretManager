@@ -79,31 +79,63 @@ Any
 
 ### 📥 Input
 
+| **Legend** | **Description** |
+|:---:|:----|
+| \[G\] | Support [custom glob](#-Input-Custom-Glob). |
+
 #### `token`
 
 `<string.secret>` GitHub personal access token. Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
 #### `mode`
 
 **\[Optional\]** `<string = "pushmerge">` How to manage target's secret.
-- `"exist"` Update target's secret if have the same key with source's secret. This will not delete any target's secret.
-- `"pushmerge"`/`"push"` Update target's secret if have the same key with source's secret, and create target's secret if have not the same key with source's secret. This will not delete any target's secret.
-- `"replace"` Make target's secret as same as source's secret (update target's secret if have the same key with source's secret, create target's secret if have not the same key with source's secret, and delete target's secret if have not the same key with source's secret).
+- `"exist"` Update target's secret if have the same name with source's secret. This will not delete any target's secret.
+- `"pushmerge"`/`"push"` Update target's secret if have the same name with source's secret, and create target's secret if have not the same name with source's secret. This will not delete any target's secret.
+- `"replace"` Make target's secret as same as source's secret (update target's secret if have the same name with source's secret, create target's secret if have not the same name with source's secret, and delete target's secret if have not the same name with source's secret).
+
+#### `target_repository`
+
+**(>= v1.1.0) \[Optional\] \[G\]** `<string>` Target repository(ies); Split repository(ies) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`.
+
+#### `target_organization`
+
+**(>= v1.1.0) \[Optional\] \[G\]** `<string>` Target organization(s); Split organization(s) per line.
 
 #### `target`
 
-`<string>` Target repository(ies) and/or organization(s). Use pipe (`|`) at the start, split repository(ies) and/or organization(s) per line. Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
+**❌ (< v1.1.0)** `<string>` Target repository(ies) and/or organization(s); Split repository(ies) and/or organization(s) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
+
+#### `secretlist`
+
+**(>= v1.1.0) \[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{secrets}}"`; Any secret name start with `GITHUB_` will ignore automatically; When using this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
+
+#### `secretlist_ignore_action`
+
+**(>= v1.1.0) \[Optional\]** `<boolean = true>` Ignore any secret name start with `ACTIONS_` or not.
 
 #### `prefix`
 
 **\[Optional\]** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
 
+### 📥 Input (Custom Glob)
+
+To use custom glob in the supported argument, follow the pattern:
+
+#### `*`
+
+Represent any length of digit (`\d`) and word (`\w`).
+
+#### `**`
+
+Represent any length of dash (`-`), digit (`\d`), dot (`.`), underscore (`_`), and word (`\w`).
+
 ### 📥 Input (Manual Part)
 
 None of the GitHub Action can scan or import the repository secret(s) or the organization secret(s) automatically, therefore this must do manually.
 
-Secret(s) that need to use (manage) can list in either `with` or `env` slot, but `with` will take priority when have the same key in both slot.
+Secret(s) that need to use (manage) can list in either `with` or `env` slot, but `with` will take priority when have the same name in both slot.
 
-Secret's key is case-insensitive and can be rename. Although secret key is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
+Secret's name is case-insensitive and can be rename. Although secret name is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
 
 ```yml
 # Example Input
@@ -140,10 +172,11 @@ jobs:
         with:
           token: "${{secrets.GITHUBTOKEN_FOR_GHSM}}"
           mode: "pushmerge"
-          target: |
+          target_repository: |
             hugoalh/GitHubAction.SendToDiscord
             hugoalh/GitHubAction.SendToIFTTT
-            (org)hugoalh-studio
+          target_organization: |
+            hugoalh-studio
           prefix: "ghsm_"
           ghsm_npm_token: "${{secrets.NPM_TOKEN}}"
           ghsm_wave: "${{secrets.FOO_BAR}}"
