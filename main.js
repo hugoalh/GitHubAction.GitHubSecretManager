@@ -283,7 +283,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			githubAction.core.setSecret(publicKeyID);
 			for (let indexExistKey = 0; indexExistKey < listExist.length; indexExistKey++) {
 				let key = listExist[indexExistKey];
-				let value = githubSodium(publicKey, secretDatabase[key]);
+				let value = githubSodium(publicKey, secretList[key]);
 				githubAction.core.setSecret(value);
 				let data = await octokit.actions.createOrUpdateOrgSecret({
 					encrypted_value: value,
@@ -303,7 +303,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
 						let key = listNotExist[indexNotExistKey];
-						let value = githubSodium(publicKey, secretDatabase[key]);
+						let value = githubSodium(publicKey, secretList[key]);
 						githubAction.core.setSecret(value);
 						let data = await octokit.actions.createOrUpdateOrgSecret({
 							encrypted_value: value,
@@ -385,7 +385,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			githubAction.core.setSecret(publicKeyID);
 			for (let indexExistKey = 0; indexExistKey < listExist.length; indexExistKey++) {
 				let key = listExist[indexExistKey];
-				let value = githubSodium(publicKey, secretDatabase[key]);
+				let value = githubSodium(publicKey, secretList[key]);
 				githubAction.core.setSecret(value);
 				let data = await octokit.actions.createOrUpdateRepoSecret({
 					encrypted_value: value,
@@ -405,7 +405,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				case "pushmerge":
 					for (let indexNotExistKey = 0; indexNotExistKey < listNotExist.length; indexNotExistKey++) {
 						let key = listNotExist[indexNotExistKey];
-						let value = githubSodium(publicKey, secretDatabase[key]);
+						let value = githubSodium(publicKey, secretList[key]);
 						githubAction.core.setSecret(value);
 						let data = await octokit.actions.createOrUpdateRepoSecret({
 							encrypted_value: value,
