@@ -101,10 +101,6 @@ Any
 
 **(>= v1.1.0) \[Optional\] \[G\]** `<string>` Target organization(s); Split organization(s) per line.
 
-#### `target`
-
-**❌ (< v1.1.0)** `<string>` Target repository(ies) and/or organization(s); Split repository(ies) and/or organization(s) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
-
 #### `secretlist`
 
 **(>= v1.1.0) \[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{secrets}}"`; Any secret name start with `GITHUB_` will ignore automatically; When using this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
@@ -116,6 +112,10 @@ Any
 #### `prefix`
 
 **\[Optional\]** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
+
+#### `target`
+
+**❌ (< v1.1.0)** `<string>` Target repository(ies) and/or organization(s); Split repository(ies) and/or organization(s) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
 
 ### 📥 Input (Custom Glob)
 
