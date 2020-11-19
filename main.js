@@ -32,8 +32,9 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		throw new TypeError(`Argument "mode" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	switch (mode.toLowerCase()) {
+		case "existmerge":
 		case "exist":
-			mode = "exist";
+			mode = "existmerge";
 			break;
 		case "pushmerge":
 		case "push":
@@ -297,7 +298,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				};
 			};
 			switch (mode) {
-				case "exist":
+				case "existmerge":
 				default:
 					break;
 				case "pushmerge":
@@ -399,7 +400,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				};
 			};
 			switch (mode) {
-				case "exist":
+				case "existmerge":
 				default:
 					break;
 				case "pushmerge":
