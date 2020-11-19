@@ -168,7 +168,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - id: "secret-manage-main"
-        uses: "hugoalh/GitHubAction.GitHubSecretManager@v1.0.0"
+        uses: "hugoalh/GitHubAction.GitHubSecretManager@v1.1.0"
         with:
           token: "${{secrets.GITHUBTOKEN_FOR_GHSM}}"
           mode: "pushmerge"
