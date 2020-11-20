@@ -202,7 +202,9 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 							break;
 						};
 						data.data.forEach((remoteRepository) => {
-							accessableRepositoryList.push(remoteRepository.full_name);
+							if (remoteRepository.fork === false && remoteRepository.archived === false && remoteRepository.permissions.admin === true) {
+								accessableRepositoryList.push(remoteRepository.full_name);
+							};
 						});
 						if (indexPage === 0) {
 							if (advancedDetermine.isString(data.headers.link) === true) {
