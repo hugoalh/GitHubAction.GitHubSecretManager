@@ -4,7 +4,6 @@
 	"description": "A GitHub action to manage secret across repository and organization.",
 	"keywords": [
 		"github-action",
-		"github",
 		"manage",
 		"manager",
 		"secret"
