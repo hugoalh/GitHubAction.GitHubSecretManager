@@ -16,7 +16,7 @@ inputs:
     description: "{string} Target organization(s)."
     required: false
   secretlist:
-    description: "{object.json} A port for import all of the secrets in the source repository at once by entering value `${{secrets}}`."
+    description: "{object.json} A port for import all of the secrets in the source repository at once."
     required: false
     default: ""
   secretlist_ignore_action:
