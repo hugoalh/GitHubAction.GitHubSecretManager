@@ -86,6 +86,12 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		};
 	};
 	githubAction.core.setSecret(JSON.stringify(secretList));
+	Object.keys(secretList).forEach((element) => {
+		if (element.search(/^GITHUB_/giu) === 0) {
+			delete secretList[element];
+		};
+	});
+	githubAction.core.setSecret(JSON.stringify(secretList));
 	githubAction.core.info(`Import workflow argument (stage 4). ([GitHub Action] GitHub Secret Manager)`);
 	let secretListIgnoreAction = githubAction.core.getInput("secretlist_ignore_action");
 	githubAction.core.info(`Analysis workflow argument (stage 4). ([GitHub Action] GitHub Secret Manager)`);
