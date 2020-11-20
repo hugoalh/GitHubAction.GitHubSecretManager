@@ -122,13 +122,10 @@ Any
 
 To use custom glob in the supported argument, follow the pattern:
 
-#### `*`
-
-Represent any length of digit (`\d`) and word (`\w`).
-
-#### `**`
-
-Represent any length of dash (`-`), digit (`\d`), dot (`.`), underscore (`_`), and word (`\w`).
+| **Pattern** | **Description** |
+|:---:|:----|
+| `*` | Represent any length of digit (`\d`) and word (`\w`). |
+| `**` | Represent any length of dash (`-`), digit (`\d`), dot (`.`), underscore (`_`), and word (`\w`). |
 
 ### 📥 Input (Manual Part)
 
