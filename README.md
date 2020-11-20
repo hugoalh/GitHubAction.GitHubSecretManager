@@ -86,6 +86,7 @@ Any
 #### `token`
 
 `<string.secret>` GitHub personal access token. Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
+
 #### `mode`
 
 **\[Optional\]** `<string = "pushmerge">` How to manage target's secret.
