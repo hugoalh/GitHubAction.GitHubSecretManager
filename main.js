@@ -46,9 +46,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		default:
 			throw new RangeError(`Argument "mode"'s value is not in the method list! ([GitHub Action] GitHub Secret Manager`);
 	};
-	if (advancedDetermine.isJSON(secretList) === true) {
-		githubAction.core.setSecret(JSON.stringify(secretList));
-	} else {
+	if (advancedDetermine.isJSON(secretList) === false) {
 		switch (advancedDetermine.isString(secretList)) {
 			case false:
 				throw new TypeError(`Argument "secretlist" must be type of object JSON! ([GitHub Action] GitHub Secret Manager)`);
@@ -85,7 +83,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 				throw new Error();
 		};
 	};
+	if (advancedDetermine.isJSON(secretList) !== true) {
+		throw new Error(`No secret to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
+	};
 	githubAction.core.setSecret(JSON.stringify(secretList));
+	Object.values(secretList).forEach((element) => {
+		githubAction.core.setSecret(element);
+	});
 	Object.keys(secretList).forEach((element) => {
 		if (element.search(/^GITHUB_/giu) === 0) {
 			delete secretList[element];
@@ -112,9 +116,6 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	githubAction.core.setSecret(JSON.stringify(secretList));
 	let secretListName = Object.keys(secretList);
 	githubAction.core.debug(`Secret Key List: ${secretListName.join(", ")} ([GitHub Action] GitHub Secret Manager)`);
-	Object.values(secretList).forEach((element) => {
-		githubAction.core.setSecret(element);
-	});
 	githubAction.core.info(`Import workflow argument (stage 5). ([GitHub Action] GitHub Secret Manager)`);
 	let targetOrganization = githubAction.core.getInput("target_organization"),
 		targetRepository = githubAction.core.getInput("target_repository"),
@@ -235,11 +236,8 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 		};
 	};
-	if (
-		(handleOrganizationList.length === 0 && handleRepositoryList.length === 0) ||
-		secretListName.length === 0
-	) {
-		throw new Error(`Nothing to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
+	if (handleOrganizationList.length === 0 && handleRepositoryList.length === 0) {
+		throw new Error(`No repository or organization to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (handleOrganizationList.length > 0) {
 		githubAction.core.info(`Manage organization(s) secret. ([GitHub Action] GitHub Secret Manager)`);
