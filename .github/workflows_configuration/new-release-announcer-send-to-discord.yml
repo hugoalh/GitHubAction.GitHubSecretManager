@@ -25,7 +25,7 @@ embeds:
         value: "%payload.release.html_url%"
         inline: false
       - name: "GitHub Marketplace"
-        value: "https://github.com/marketplace/actions/github-secret-manager"
+        value: "https://github.com/marketplace/actions/secret-manager"
         inline: false
       - name: "GitHub Repository"
         value: "https://github.com/hugoalh/GitHubAction.GitHubSecretManager"
