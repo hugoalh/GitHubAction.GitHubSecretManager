@@ -104,7 +104,7 @@ Any
 
 #### `secretlist`
 
-**(>= v1.1.0) \[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{secrets}}"`; Any secret name start with `GITHUB_` will ignore automatically; When using this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
+**(>= v1.1.0) \[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{toJSON(secrets)}}"`; Any secret name start with `GITHUB_` will ignore automatically; When using this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
 
 #### `secretlist_ignore_action`
 

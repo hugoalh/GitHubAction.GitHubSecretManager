@@ -15,7 +15,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	let environmentVariable = process.env,
 		target = githubAction.core.getInput("target");
 	githubAction.core.info(`Analysis workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
-	if (environmentVariable.GITHUB_ACTIONS !== true && environmentVariable.GITHUB_ACTIONS !== "true") {
+	if (environmentVariable.GITHUB_ACTIONS.toLowerCase() !== "true") {
 		throw new Error(`For security reason, this action cannot execute/run on self-host machine/runner! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (environmentVariable.GITHUB_ACTOR !== environmentVariable.GITHUB_REPOSITORY.split("/")[0]) {
@@ -46,47 +46,43 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 		default:
 			throw new RangeError(`Argument "mode"'s value is not in the method list! ([GitHub Action] GitHub Secret Manager`);
 	};
-	if (advancedDetermine.isJSON(secretList) === false) {
-		switch (advancedDetermine.isString(secretList)) {
-			case false:
+	switch (advancedDetermine.isString(secretList)) {
+		case null:
+			secretList = {};
+			githubAction.core.info(`Import workflow argument (stage 3). ([GitHub Action] GitHub Secret Manager)`);
+			let prefix = githubAction.core.getInput("prefix");
+			githubAction.core.info(`Analysis workflow argument (stage 3). ([GitHub Action] GitHub Secret Manager)`);
+			if (advancedDetermine.isStringSingleLine(prefix) !== true) {
+				throw new TypeError(`Argument "prefix" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
+			};
+			if (prefix.toLowerCase().search(/^[\d\w]+_$/gu) !== 0) {
+				throw new SyntaxError(`Argument "prefix"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager)`);
+			};
+			prefix = prefix.toUpperCase();
+			Object.keys(environmentVariable).forEach((element) => {
+				if (element.toUpperCase().indexOf(prefix) === 0) {
+					secretList[element.toUpperCase().replace(prefix, "")] = process.env[element];
+				};
+			});
+			Object.keys(environmentVariable).forEach((element) => {
+				if (element.toUpperCase().indexOf(`INPUT_${prefix}`) === 0) {
+					secretList[element.toUpperCase().replace(`INPUT_${prefix}`, "")] = process.env[element];
+				};
+			});
+			break;
+		case true:
+			if (advancedDetermine.isStringifyJSON(secretList) === false) {
 				throw new TypeError(`Argument "secretlist" must be type of object JSON! ([GitHub Action] GitHub Secret Manager)`);
-			case null:
-				secretList = {};
-				githubAction.core.info(`Import workflow argument (stage 3). ([GitHub Action] GitHub Secret Manager)`);
-				let prefix = githubAction.core.getInput("prefix");
-				githubAction.core.info(`Analysis workflow argument (stage 3). ([GitHub Action] GitHub Secret Manager)`);
-				if (advancedDetermine.isStringSingleLine(prefix) !== true) {
-					throw new TypeError(`Argument "prefix" must be type of string (non-nullable)! ([GitHub Action] GitHub Secret Manager)`);
-				};
-				if (prefix.toLowerCase().search(/^[\d\w]+_$/gu) !== 0) {
-					throw new SyntaxError(`Argument "prefix"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager)`);
-				};
-				prefix = prefix.toUpperCase();
-				Object.keys(environmentVariable).forEach((element) => {
-					if (element.toUpperCase().indexOf(prefix) === 0) {
-						secretList[element.toUpperCase().replace(prefix, "")] = process.env[element];
-					};
-				});
-				Object.keys(environmentVariable).forEach((element) => {
-					if (element.toUpperCase().indexOf(`INPUT_${prefix}`) === 0) {
-						secretList[element.toUpperCase().replace(`INPUT_${prefix}`, "")] = process.env[element];
-					};
-				});
-				break;
-			case true:
-				if (advancedDetermine.isStringifyJSON(secretList) === false) {
-					throw new TypeError(`Argument "secretlist" must be type of object JSON! ([GitHub Action] GitHub Secret Manager)`);
-				};
-				secretList = JSON.parse(secretList);
-				break;
-			default:
-				throw new Error();
-		};
+			};
+			secretList = JSON.parse(secretList);
+			break;
+		case false:
+		default:
+			throw new TypeError(`Argument "secretlist" must be type of object JSON! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (advancedDetermine.isJSON(secretList) !== true) {
 		throw new Error(`No secret to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
 	};
-	githubAction.core.setSecret(JSON.stringify(secretList));
 	Object.values(secretList).forEach((element) => {
 		githubAction.core.setSecret(element);
 	});
@@ -95,17 +91,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			delete secretList[element];
 		};
 	});
-	githubAction.core.setSecret(JSON.stringify(secretList));
 	githubAction.core.info(`Import workflow argument (stage 4). ([GitHub Action] GitHub Secret Manager)`);
 	let secretListIgnoreAction = githubAction.core.getInput("secretlist_ignore_action");
 	githubAction.core.info(`Analysis workflow argument (stage 4). ([GitHub Action] GitHub Secret Manager)`);
 	if (advancedDetermine.isBoolean(secretListIgnoreAction, { allowStringify: true }) !== true) {
 		throw new TypeError(`Argument "secretlist_ignore_action" must be type of boolean! ([GitHub Action] GitHub Secret Manager)`);
 	};
-	secretListIgnoreAction = (
-		secretListIgnoreAction === true ||
-		secretListIgnoreAction === "true"
-	);
+	secretListIgnoreAction = (secretListIgnoreAction === "true");
 	if (secretListIgnoreAction === true) {
 		Object.keys(secretList).forEach((element) => {
 			if (element.search(/^ACTIONS_/giu) === 0) {
@@ -113,7 +105,6 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 		});
 	};
-	githubAction.core.setSecret(JSON.stringify(secretList));
 	let secretListName = Object.keys(secretList);
 	githubAction.core.debug(`Secret Key List: ${secretListName.join(", ")} ([GitHub Action] GitHub Secret Manager)`);
 	githubAction.core.info(`Import workflow argument (stage 5). ([GitHub Action] GitHub Secret Manager)`);
