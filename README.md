@@ -85,13 +85,13 @@ Any
 
 #### `token`
 
-`<string.secret>` GitHub personal access token. Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
+`<string.secret>` GitHub personal access token; Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
 
 #### `mode`
 
 **\[Optional\]** `<string = "pushmerge">` How to manage target's secret.
-- `"existmerge"`/`"exist"` Update target's secret if have the same name with source's secret. This will not delete any target's secret.
-- `"pushmerge"`/`"push"` Update target's secret if have the same name with source's secret, and create target's secret if have not the same name with source's secret. This will not delete any target's secret.
+- `"existmerge"`/`"exist"` Update target's secret if have the same name with source's secret; This will not delete any target's secret.
+- `"pushmerge"`/`"push"` Update target's secret if have the same name with source's secret, and create target's secret if have not the same name with source's secret; This will not delete any target's secret.
 - `"replace"` Make target's secret as same as source's secret (update target's secret if have the same name with source's secret, create target's secret if have not the same name with source's secret, and delete target's secret if have not the same name with source's secret).
 
 #### `target_repository`
