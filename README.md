@@ -85,7 +85,7 @@ Any
 
 #### `token`
 
-`<string.secret>` GitHub personal access token; Use `"${{github.token}}"` or `"${{secrets.GITHUB_TOKEN}}"` will not work!
+`<string.secret>` GitHub personal access token; Use default token (i.e.: `"${{github.token}}"` and `"${{secrets.GITHUB_TOKEN}}"`) will not work!
 
 #### `mode`
 
@@ -96,27 +96,23 @@ Any
 
 #### `target_repository`
 
-**(>= v1.1.0) \[Optional\] \[G\]** `<string>` Target repository(ies); Split repository(ies) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`.
+**\[Optional\] \[G\]** `<string>` Target repository; When target multiple repositories, split each repository with comma (`,`) or per line; Each repository must have format `$repositoryOwner$/$repositoryName$`.
 
 #### `target_organization`
 
-**(>= v1.1.0) \[Optional\] \[G\]** `<string>` Target organization(s); Split organization(s) per line.
+**\[Optional\] \[G\]** `<string>` Target organization; When target multiple organizations, split each organization with comma (`,`) or per line.
 
 #### `secretlist`
 
-**(>= v1.1.0) \[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{toJSON(secrets)}}"`; Any secret name start with `GITHUB_` will ignore automatically; When using this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
+**\[Optional\]** `<object.json>` A port for import all of the secrets in the source repository at once by entering value `"${{toJSON(secrets)}}"`; Any secret name start with `GITHUB_` will ignore automatically; When use this argument, [`prefix`](#prefix) and "[📥 Input (Manual Part)](#-Input-Manual-Part)" will ignore.
 
 #### `secretlist_ignore_action`
 
-**(>= v1.1.0) \[Optional\]** `<boolean = true>` Ignore any secret name start with `ACTIONS_` or not.
+**\[Optional\]** `<boolean = true>` Ignore any secret name start with `ACTIONS_` or not.
 
 #### `prefix`
 
-**\[Optional\]** `<string = "ghsm_">` Prefix of the secret(s) that need to use (manage), case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
-
-#### `target`
-
-**❌ (< v1.1.0)** `<string>` Target repository(ies) and/or organization(s); Split repository(ies) and/or organization(s) per line; Each repository must have format `$repositoryOwner$/$repositoryName$`, and each organization must have format `(org(anization)?)$organizationName$`.
+**\[Optional\]** `<string = "ghsm_">` Prefix of the secret that need to manage/use, case-insensitive and must end with underscore(`_`). For more information, please visit section "[📥 Input (Manual Part)](#-Input-Manual-Part)".
 
 ### 📥 Input (Custom Glob)
 
@@ -129,11 +125,11 @@ To use custom glob in the supported argument, follow the pattern:
 
 ### 📥 Input (Manual Part)
 
-None of the GitHub Action can scan or import the repository secret(s) or the organization secret(s) automatically, therefore this must do manually.
+None of the GitHub Action can scan or import the repository secrets or the organization secrets automatically, therefore this must do manually.
 
-Secret(s) that need to use (manage) can list in either `with` or `env` slot, but `with` will take priority when have the same name in both slot.
+Secrets that need to manage/use can list in either `with` or `env` slot, but `with` will take priority when have the same name in the both slot.
 
-Secret's name is case-insensitive and can be rename. Although secret name is case-insensitive, it is recommended to use lower case in `with` and upper case in `env`.
+Secret's name is case-insensitive and can be rename. Although secret name is case-insensitive, it is recommended to use lower case in the `with` slot and upper case in the `env` slot.
 
 ```yml
 # Example Input

@@ -12,17 +12,13 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	regexpEscape = require("escape-string-regexp");
 (async () => {
 	githubAction.core.info(`Import workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
-	let environmentVariable = process.env,
-		target = githubAction.core.getInput("target");
+	let environmentVariable = process.env;
 	githubAction.core.info(`Analysis workflow argument (stage 1). ([GitHub Action] GitHub Secret Manager)`);
 	if (environmentVariable.GITHUB_ACTIONS.toLowerCase() !== "true") {
 		throw new Error(`For security reason, this action cannot execute/run on self-host machine/runner! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	if (environmentVariable.GITHUB_ACTOR !== environmentVariable.GITHUB_REPOSITORY.split("/")[0]) {
 		throw new Error(`For security reason, action's actor and source's secret's owner must be the same user! ([GitHub Action] GitHub Secret Manager)`);
-	};
-	if (advancedDetermine.isString(target) === true) {
-		throw new Error(`Argument "target" is removed! Use "target_repository" and/or "target_organization" instead. ([GitHub Action] GitHub Secret Manager)`);
 	};
 	githubAction.core.info(`Import workflow argument (stage 2). ([GitHub Action] GitHub Secret Manager)`);
 	let mode = githubAction.core.getInput("mode"),
@@ -44,7 +40,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			mode = "replace";
 			break;
 		default:
-			throw new RangeError(`Argument "mode"'s value is not in the method list! ([GitHub Action] GitHub Secret Manager`);
+			throw new RangeError(`Argument "mode"'s value is not in the method list! ([GitHub Action] GitHub Secret Manager)`);
 	};
 	switch (advancedDetermine.isString(secretList)) {
 		case null:
@@ -108,8 +104,8 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	let secretListName = Object.keys(secretList);
 	githubAction.core.debug(`Secret Key List: ${secretListName.join(", ")} ([GitHub Action] GitHub Secret Manager)`);
 	githubAction.core.info(`Import workflow argument (stage 5). ([GitHub Action] GitHub Secret Manager)`);
-	let targetOrganization = githubAction.core.getInput("target_organization"),
-		targetRepository = githubAction.core.getInput("target_repository"),
+	let targetOrganizationInput = githubAction.core.getInput("target_organization"),
+		targetRepositoryInput = githubAction.core.getInput("target_repository"),
 		token = githubAction.core.getInput("token");
 	githubAction.core.info(`Analysis workflow argument (stage 5). ([GitHub Action] GitHub Secret Manager)`);
 	if (advancedDetermine.isStringSingleLine(token) !== true) {
@@ -117,15 +113,15 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 	};
 	githubAction.core.info(`Set up transaction platform. ([GitHub Action] GitHub Secret Manager)`);
 	const octokit = githubAction.github.getOctokit(token);
-	let accessableOrganizationList = [],
-		accessableRepositoryList = [],
+	let fetchOrganizationList = [],
+		fetchRepositoryList = [],
 		fetchOrganizationListDispatch = false,
 		fetchRepositoryListDispatch = false,
-		handleOrganizationList = [],
-		handleRepositoryList = [];
-	targetOrganization = targetOrganization.split("\n");
-	for (let indexOrganization = 0; indexOrganization < targetOrganization.length; indexOrganization++) {
-		let targetOrganizationName = targetOrganization[indexOrganization];
+		targetOrganizationHandle = [],
+		targetRepositoryHandle = [];
+	targetOrganizationInput = targetOrganizationInput.replace(/\r\n/gu, "\n").replace(/\r/gu, "\n").split(/[,\n]/gu);
+	for (let indexOrganization = 0; indexOrganization < targetOrganizationInput.length; indexOrganization++) {
+		let targetOrganizationName = targetOrganizationInput[indexOrganization].trim();
 		if (targetOrganizationName.length > 0) {
 			if (targetOrganizationName.search(/^[\d\w\-._*]+$/giu) === 0) {
 				let pattern = new RegExp(
@@ -147,7 +143,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 							break;
 						};
 						data.data.forEach((remoteOrganization) => {
-							accessableOrganizationList.push(remoteOrganization.login);
+							fetchOrganizationList.push(remoteOrganization.login);
 						});
 						if (indexPage === 0) {
 							if (advancedDetermine.isString(data.headers.link) === true) {
@@ -160,21 +156,21 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 						};
 					};
 				};
-				accessableOrganizationList.forEach((accessableOrganizationName) => {
+				fetchOrganizationList.forEach((accessableOrganizationName) => {
 					if (accessableOrganizationName.search(pattern) === 0) {
-						handleOrganizationList.push(accessableOrganizationName);
+						targetOrganizationHandle.push(accessableOrganizationName);
 					};
 				});
 			} else if (targetOrganizationName.search(/^[\d\w\-._]+$/giu) === 0) {
-				handleOrganizationList.push(targetOrganizationName);
+				targetOrganizationHandle.push(targetOrganizationName);
 			} else {
 				throw new SyntaxError(`Argument "target_organization"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager)`);
 			};
 		};
 	};
-	targetRepository = targetRepository.split("\n");
-	for (let indexRepository = 0; indexRepository < targetRepository.length; indexRepository++) {
-		let targetRepositoryName = targetRepository[indexRepository];
+	targetRepositoryInput = targetRepositoryInput.replace(/\r\n/gu, "\n").replace(/\r/gu, "\n").split(/[,\n]/gu);
+	for (let indexRepository = 0; indexRepository < targetRepositoryInput.length; indexRepository++) {
+		let targetRepositoryName = targetRepositoryInput[indexRepository].trim();
 		if (targetRepositoryName.length > 0) {
 			if (targetRepositoryName.search(/^[\d\w\-._*]+\/[\d\w\-._*]+$/giu) === 0) {
 				let pattern = new RegExp(
@@ -201,7 +197,7 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 						};
 						data.data.forEach((remoteRepository) => {
 							if (remoteRepository.fork === false && remoteRepository.archived === false && remoteRepository.permissions.admin === true) {
-								accessableRepositoryList.push(remoteRepository.full_name);
+								fetchRepositoryList.push(remoteRepository.full_name);
 							};
 						});
 						if (indexPage === 0) {
@@ -215,25 +211,25 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 						};
 					};
 				};
-				accessableRepositoryList.forEach((accessableRepositoryName) => {
+				fetchRepositoryList.forEach((accessableRepositoryName) => {
 					if (accessableRepositoryName.search(pattern) === 0) {
-						handleRepositoryList.push(accessableRepositoryName);
+						targetRepositoryHandle.push(accessableRepositoryName);
 					};
 				});
 			} else if (targetRepositoryName.search(/^[\d\w\-._]+\/[\d\w\-._]+$/giu) === 0) {
-				handleRepositoryList.push(targetRepositoryName);
+				targetRepositoryHandle.push(targetRepositoryName);
 			} else {
 				throw new SyntaxError(`Argument "target_repository"'s value is not match the require pattern! ([GitHub Action] GitHub Secret Manager)`);
 			};
 		};
 	};
-	if (handleOrganizationList.length === 0 && handleRepositoryList.length === 0) {
+	if (targetOrganizationHandle.length === 0 && targetRepositoryHandle.length === 0) {
 		throw new Error(`No repository or organization to manage. Probably something went wrong? ([GitHub Action] GitHub Secret Manager)`);
 	};
-	if (handleOrganizationList.length > 0) {
+	if (targetOrganizationHandle.length > 0) {
 		githubAction.core.info(`Manage organization(s) secret. ([GitHub Action] GitHub Secret Manager)`);
-		for (let indexOrganization = 0; indexOrganization < handleOrganizationList.length; indexOrganization++) {
-			let organizationName = handleOrganizationList[indexOrganization],
+		for (let indexOrganization = 0; indexOrganization < targetOrganizationHandle.length; indexOrganization++) {
+			let organizationName = targetOrganizationHandle[indexOrganization],
 				result = [],
 				totalPage = 1;
 			for (let indexPage = 0; indexPage < totalPage; indexPage++) {
@@ -330,10 +326,10 @@ const advancedDetermine = require("@hugoalh/advanced-determine"),
 			};
 		};
 	};
-	if (handleRepositoryList.length > 0) {
+	if (targetRepositoryHandle.length > 0) {
 		githubAction.core.info(`Manage repository(ies) secret. ([GitHub Action] GitHub Secret Manager)`);
-		for (let indexRepository = 0; indexRepository < handleRepositoryList.length; indexRepository++) {
-			let [repositoryOwner, repositoryName] = handleRepositoryList[indexRepository].split("/"),
+		for (let indexRepository = 0; indexRepository < targetRepositoryHandle.length; indexRepository++) {
+			let [repositoryOwner, repositoryName] = targetRepositoryHandle[indexRepository].split("/"),
 				result = [],
 				totalPage = 1;
 			for (let indexPage = 0; indexPage < totalPage; indexPage++) {
