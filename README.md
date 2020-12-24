@@ -55,20 +55,42 @@ A GitHub action to manage secret across repository and organization.
 ### 🌟 Feature
 
 - Simple setup.
-- Support multiple mode.
+- Support multiple behaviour.
 
 ## 🛠 Configuration
 
 ### 🏗 Environment
 
-#### Operating System
+<table>
+  <tr>
+    <td align="center"></td>
+    <td align="center"><b>Use NodeJS (Default / <code>/use-nodejs</code>)</b></td>
+    <td align="center"><b>Use Docker (<code>/use-docker</code>)</b></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Operating System</b></td>
+    <td><i>Any</i></td>
+    <td>Linux</td>
+  </tr>
+  <tr>
+    <td align="center"><b>Software</b></td>
+    <td><ul>
+      <li>NodeJS (>= v14.15)</li>
+      <li>NPM (>= v6.14.8)</li>
+    </ul></td>
+    <td>Docker</td>
+  </tr>
+</table>
 
-Any
-
-#### Software
-
-- NodeJS (>= v12.13)
-- NPM (>= v6.12)
+If need to use a different environment to execute this action, add a suffix after action's index and before version tag, i.e.:
+```yml
+# Default
+uses: "hugoalh/GitHubAction.GitHubSecretManager@v1.2.0"
+# NodeJS
+uses: "hugoalh/GitHubAction.GitHubSecretManager/use-nodejs@v1.2.0"
+# Docker
+uses: "hugoalh/GitHubAction.GitHubSecretManager/use-docker@v1.2.0"
+```
 
 #### ⚠ Important
 

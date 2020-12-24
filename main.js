@@ -1,7 +1,7 @@
 /*==================
 [GitHub Action] GitHub Secret Manager
 	Language:
-		NodeJS/12.13.0
+		NodeJS/14.15.0
 ==================*/
 const advancedDetermine = require("@hugoalh/advanced-determine"),
 	githubAction = {

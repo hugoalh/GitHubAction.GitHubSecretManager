@@ -1,12 +1,13 @@
 /*==================
 [GitHub Action] GitHub Secret Manager - Setup
 	Language:
-		NodeJS/12.13.0
+		NodeJS/14.15.0
 ==================*/
 const childProcess = require("child_process");
-childProcess.execSync(
-	`npm install`,
+let setupLog = childProcess.execSync(
+	`npm install --production`,
 	{
 		cwd: __dirname
 	}
 );
+console.log(setupLog.toString("utf8"));

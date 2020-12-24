@@ -1,0 +1,36 @@
+name: "Secret Manager"
+author: "hugoalh"
+description: "Manage secret across repository and organization."
+inputs:
+  token:
+    description: "{string.secret} GitHub personal access token."
+    required: true
+  mode:
+    description: "{string} How to manage target's secret."
+    required: false
+    default: "pushmerge"
+  target_repository:
+    description: "{string} Target repository."
+    required: false
+  target_organization:
+    description: "{string} Target organization."
+    required: false
+  secretlist:
+    description: "{object.json} A port for import all of the secrets in the source repository at once."
+    required: false
+    default: ""
+  secretlist_ignore_action:
+    description: "{boolean} Ignore any secret name start with `ACTIONS_`."
+    required: false
+    default: "true"
+  prefix:
+    description: "{string} Prefix of the secret that need to manage/use."
+    required: false
+    default: "ghsm_"
+runs:
+  using: "node12"
+  pre: "../setup.js"
+  main: "../main.js"
+branding:
+  icon: "upload"
+  color: "gray-dark"
